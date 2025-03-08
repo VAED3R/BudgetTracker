@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "./LoginSignup.css";
-import { auth } from "../Firebase/FirebaseConfig";
+import { auth } from "../../Firebase/FirebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const LoginSignup = () => {
   const [action, setAction] = useState("Sign Up");
@@ -10,15 +11,19 @@ export const LoginSignup = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+
   const handleAuth = async () => {
     setError("");
     try {
       if (action === "Sign Up") {
         await createUserWithEmailAndPassword(auth, email, password);
-        alert(`Welcome ${name}! Account Created Successfully.`);
+        alert("Account Created Successfully!");
+        navigate("/home");  // Redirect to home page after sign up
       } else {
         await signInWithEmailAndPassword(auth, email, password);
         alert("Login Successful!");
+        navigate("/home");  // Redirect to home page after login
       }
     } catch (err) {
       setError(err.message);
