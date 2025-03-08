@@ -1,38 +1,58 @@
-import React, { useState } from 'react'
-import './LoginSignup.css'
-import { auth } from "../firebase/firebaseConfig";
+import React, { useState } from "react";
+import "./LoginSignup.css";
+import { auth } from "../Firebase/FirebaseConfig";
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
 export const LoginSignup = () => {
- 
-    
-  
-    return (
+  const [action, setAction] = useState("Sign Up");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+
+  const handleAuth = async () => {
+    setError("");
+    try {
+      if (action === "Sign Up") {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert(`Welcome ${name}! Account Created Successfully.`);
+      } else {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Login Successful!");
+      }
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  return (
     <div className="container">
-        <div className="header">
-            <div className="text">{action}</div>
+      <div className="header">
+        <div className="text">{action}</div>
+      </div>
+      <div className="inputs">
+        {action === "Login" ? null : (
+          <div className="input">
+            <i className="fa fa-user" aria-hidden="true"></i>
+            <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
+          </div>
+        )}
+        <div className="input">
+          <i className="fa fa-envelope" aria-hidden="true"></i>
+          <input type="email" placeholder="Email Id" value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
-        <div className="inputs">
-            {action==="Login"?<div />:
-                <div className="input">
-                    <i class="fa fa-user" aria-hidden="true"></i>
-                    <input type="text" placeholder='Name' />
-                </div>
-            }
-            <div className="input">
-                <i class="fa fa-envelope" aria-hidden="true"></i>
-                <input type="email" placeholder='Email Id' />
-            </div>
-            <div className="input">
-                <i class="fa fa-key" aria-hidden="true"></i>
-                <input type="password" placeholder='Password' />
-            </div>
+        <div className="input">
+          <i className="fa fa-key" aria-hidden="true"></i>
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        {action==="Sign Up"?<div />:<div className="forgot-password">Lost password? <span>Click here</span></div>}
-        <div className="submit-container">
-            <div className={action==="Login"?"submit grey":"submit"} onClick={()=>{setAction("Sign Up")}}>Sign Up</div>
-            <div className={action==="Sign Up"?"submit grey":"submit"} onClick={()=>{setAction("Login")}}>Login</div>
-        </div>
+      </div>
+      {error && <p className="error">{error}</p>} {/* 🔹 Show errors */}
+      <div className="submit-container">
+        <button className="submit" onClick={handleAuth}>{action}</button>
+        <button className="switch" onClick={() => setAction(action === "Sign Up" ? "Login" : "Sign Up")}>
+          Switch to {action === "Sign Up" ? "Login" : "Sign Up"}
+        </button>
+      </div>
     </div>
-  )
-}
+  );
+};
