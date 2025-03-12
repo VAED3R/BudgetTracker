@@ -13,22 +13,36 @@ export const LoginSignup = () => {
 
   const navigate = useNavigate();
 
-  const handleAuth = async () => {
-    setError("");
-    try {
-      if (action === "Sign Up") {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Account Created Successfully!");
-        navigate("/home");  // Redirect to home page after sign up
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-        alert("Login Successful!");
-        navigate("/home");  // Redirect to home page after login
-      }
-    } catch (err) {
-      setError(err.message);
+const handleAuth = async () => {
+  setError(""); // Clear previous error
+  try {
+    if (action === "Sign Up") {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Account Created Successfully!");
+      navigate("/home");  // Redirect to home page after sign up
+    } else {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Login Successful!");
+      navigate("/home");  // Redirect to home page after log in
     }
-  };
+  } catch (err) {
+    // ✅ Convert Firebase errors to user-friendly errors
+    if (err.code === "auth/email-already-in-use") {
+      setError("An account with this email already exists.");
+    } else if (err.code === "auth/invalid-email") {
+      setError("Please enter a valid email address.");
+    } else if (err.code === "auth/wrong-password") {
+      setError("Incorrect password. Please try again.");
+    } else if (err.code === "auth/user-not-found") {
+      setError("No account found with this email.");
+    } else if (err.code === "auth/weak-password") {
+      setError("Password must be at least 6 characters.");
+    } else {
+      setError("Something went wrong. Please try again.");
+    }
+  }
+};
+
 
   return (
     <div className="container">
@@ -55,7 +69,7 @@ export const LoginSignup = () => {
       <div className="submit-container">
         <button className="submit" onClick={handleAuth}>{action}</button>
         <button className="switch" onClick={() => setAction(action === "Sign Up" ? "Login" : "Sign Up")}>
-          Switch to {action === "Sign Up" ? "Login" : "Sign Up"}
+          {action === "Sign Up" ? "Login" : "Sign Up"}
         </button>
       </div>
     </div>

@@ -64,28 +64,40 @@
 
 .submit-container {
     display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 100%;
-    gap: 1rem;
-}
-
-.submit {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    background-color: rgb(69, 1, 138);
-    width: 100%;
-    border-radius: 15px;
-    padding: 5px;
-    color: white;
-    font-weight: 500;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 20px;
+  }
+  
+  .submit-container .submit,
+  .submit-container .switch {
+    width: 120px;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
     cursor: pointer;
-    transition: 0.5s;
-}
-
-.grey {
-    background-color: rgb(230, 230, 230);
-    color: black;
-    transition: 0.5s;
-}
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .submit-container .submit {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .submit-container .submit:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+  }
+  
+  .submit-container .switch {
+    background-color: #f0f0f0;
+    color: #333;
+    border: 1px solid #ccc;
+  }
+  
+  .submit-container .switch:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+  

@@ -6,8 +6,12 @@ export const Home = () => {
 
   const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    await auth.signOut();
+    navigate("/");
+  };
+
   useEffect(() => {
-    // Check if user is not logged in
     if (!auth.currentUser) {
       navigate('/');
     }
@@ -16,7 +20,7 @@ export const Home = () => {
   return (
     <div>
       <h1>Welcome to your Budget Tracker! 💸</h1>
-      <p>Now you can track your expenses here.</p>
+      <p>Use the navbar to access the features</p>
     </div>
   )
 }

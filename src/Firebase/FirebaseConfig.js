@@ -1,8 +1,10 @@
-// Import the functions you need from the SDKs you need
+// Import the functions you need from the SDKs
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth } from "firebase/auth";
+import { getAuth } from 'firebase/auth';
+import { getFirestore } from 'firebase/firestore';  
 
+// Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAlEiXc5c9x0IpInih4hVkzs52F1upEHsY",
   authDomain: "budget-tracker-e56d7.firebaseapp.com",
@@ -16,4 +18,7 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-export const auth = getAuth(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+export { auth, db };
