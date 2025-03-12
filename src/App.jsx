@@ -8,6 +8,7 @@ import Navbar from './components/Navbar/Navbar';
 import Dashboard from './components/Dashboard/Dashboard';
 import Income from './components/Income/Income';
 import Expenses from './components/Expenses/Expenses';
+import OneTimeTransactions from './components/OneTimeTransactions/OneTimeTransactions';
 
 import './App.css';
 
@@ -18,11 +19,7 @@ function App() {
   // ✅ Track if user is logged in (Even After Refresh)
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+      setUser(user ? user : null);
       setLoading(false);
     });
 
@@ -42,6 +39,7 @@ function App() {
         <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
         <Route path="/income" element={user ? <Income /> : <Navigate to="/" />} />
         <Route path="/expenses" element={user ? <Expenses /> : <Navigate to="/" />} />
+        <Route path="/one-time-transactions" element={user ? <OneTimeTransactions /> : <Navigate to="/" />} />
       </Routes>
     </Router>
   );

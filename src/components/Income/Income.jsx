@@ -64,7 +64,6 @@ const Income = () => {
 
   return (
     <div className="income-wrapper">
-      <section>
         <div className="add-income">
           <h2>Add Income</h2>
           <form onSubmit={handleSubmit}>
@@ -92,20 +91,17 @@ const Income = () => {
             <button type="submit">Add Income</button>
           </form>
         </div>
-      </section>
-      <section>
         <div className="income-list">
           <h3>Your Incomes</h3>
           <ul>
             {incomes.map(income => (
               <li key={income.id}>
-                {income.name} - ${income.amount} ({income.frequency})
+                {income.name} - ₹{income.amount} ({income.frequency})
                 <button onClick={() => handleDelete(income.id)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
-      </section>
     </div>
   );
 };

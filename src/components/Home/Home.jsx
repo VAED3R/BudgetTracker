@@ -20,7 +20,7 @@ export const Home = () => {
   return (
     <div>
       <h1>Welcome to your Budget Tracker! 💸</h1>
-      <p>Use the navbar to access the features</p>
+      <p>Use the income and the expenses tab to add your incomes and expenses</p>
     </div>
   )
 }

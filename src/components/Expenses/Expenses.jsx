@@ -64,7 +64,6 @@ const Expenses = () => {
 
   return (
     <div className="expense-wrapper">
-      <section>
         <div className="add-expense">
           <h2>Add Expense</h2>
           <form onSubmit={handleSubmit}>
@@ -92,20 +91,17 @@ const Expenses = () => {
             <button type="submit">Add Expense</button>
           </form>
         </div>
-      </section>
-      <section>
         <div className="expense-list">
           <h3>Your Expenses</h3>
           <ul>
             {expenses.map(expense => (
               <li key={expense.id}>
-                {expense.name} - ${expense.amount} ({expense.frequency})
+                {expense.name} - ₹{expense.amount} ({expense.frequency})
                 <button onClick={() => handleDelete(expense.id)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
-      </section>
     </div>
   );
 };

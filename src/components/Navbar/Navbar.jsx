@@ -27,6 +27,7 @@ const Navbar = () => {
           <Link to="/dashboard" className="nav-link">Dashboard</Link>
           <Link to="/income" className="nav-link">Income</Link>
           <Link to="/expenses" className="nav-link">Expenses</Link>
+          <Link to="/one-time-transactions" className="nav-link">OneTimeTransactions</Link>
         </div>
       </div>
       <button onClick={handleLogout} className="logout-btn">

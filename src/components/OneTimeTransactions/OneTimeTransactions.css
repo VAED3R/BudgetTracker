@@ -1,26 +1,18 @@
-.expense-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  flex-direction: column;
-  gap: 10rem;
-  min-width: 60vw;
-  max-width: 1000px;
-  margin: 0 auto;
-  margin-top: 40px;
-  /* background-color: rebeccapurple; */
-  flex-direction: row;color: black;
-}
-  
-  section {
-    height: 100vh;
+.transaction-wrapper {
     display: flex;
-    justify-content: center;
     align-items: center;
-    color: black;
+    justify-content: space-around;
+    flex-direction: column;
+    gap: 10rem;
+    min-width: 60vw;
+    max-width: 1000px;
+    margin: 0 auto;
+    margin-top: 40px;
+    /* background-color: rebeccapurple; */
+    flex-direction: row;color: black;
   }
   
-  .add-expense {
+  .add-transaction {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #e0e0e0;
@@ -28,36 +20,36 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
   
-  .add-expense h2 {
+  .add-transaction h2 {
     text-align: center;
     margin-bottom: 15px;
   }
   
-  .add-expense form {
+  .add-transaction form {
     display: flex;
     flex-direction: column;
     gap: 15px;
   }
   
-  .add-expense input, .add-expense select, .add-expense button {
+  .add-transaction input, .add-transaction select, .add-transaction button {
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 16px;
   }
   
-  .add-expense button {
+  .add-transaction button {
     background-color: #4caf50;
     color: white;
     border: none;
     cursor: pointer;
   }
   
-  .add-expense button:hover {
+  .add-transaction button:hover {
     background-color: #388e3c;
   }
   
-  .expense-list {
+  .transaction-list {
     background-color: #f9f9f9;
     padding: 20px;
     border: 1px solid #e0e0e0;
@@ -67,17 +59,17 @@
     overflow-y: auto;
   }
   
-  .expense-list h3 {
+  .transaction-list h3 {
     text-align: center;
     margin-bottom: 15px;
   }
   
-  .expense-list ul {
+  .transaction-list ul {
     list-style-type: none;
     padding: 0;
   }
   
-  .expense-list li {
+  .transaction-list li {
     background-color: #fff;
     padding: 10px 15px;
     margin-bottom: 10px;
@@ -88,7 +80,7 @@
     align-items: center;
   }
   
-  .expense-list li button {
+  .transaction-list li button {
     background-color: #f44336;
     color: white;
     border: none;
@@ -97,6 +89,6 @@
     cursor: pointer;
   }
   
-  .expense-list li button:hover {
+  .transaction-list li button:hover {
     background-color: #d32f2f;
   }

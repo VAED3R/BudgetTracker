@@ -1,17 +1,15 @@
 .income-wrapper {
     display: flex;
+    align-items: center;
+    justify-content: space-around;
     flex-direction: column;
-    gap: 30px;
+    gap: 10rem;
+    min-width: 60vw;
     max-width: 1000px;
     margin: 0 auto;
-  }
-  
-  section {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
+    margin-top: 40px;
+    /* background-color: rebeccapurple; */
+    flex-direction: row;color: black;
   }
   
   .add-income {
