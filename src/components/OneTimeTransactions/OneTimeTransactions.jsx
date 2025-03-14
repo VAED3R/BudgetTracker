@@ -3,6 +3,8 @@ import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { db, auth } from '../../Firebase/FirebaseConfig';
 import './OneTimeTransactions.css';
 
+import { motion } from 'framer-motion';
+
 const OneTimeTransactions = () => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
@@ -63,6 +65,7 @@ const OneTimeTransactions = () => {
   };
 
   return (
+    <>
     <div className="transaction-wrapper">
       <div className="add-transaction">
         <h2>Add One-Time Transaction</h2>
@@ -102,6 +105,14 @@ const OneTimeTransactions = () => {
         </ul>
       </div>
     </div>
+    <motion.div
+      className="color-sweep"
+      initial={{ y: "0%" }} // Start covering the screen
+      animate={{ y: "-100%" }} // Move away when loaded
+      exit={{ y: "0%" }} // Cover the screen on exit
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    />
+    </>
   );
 };
 

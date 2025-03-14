@@ -3,6 +3,8 @@ import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore'
 import { db, auth } from '../../Firebase/FirebaseConfig';
 import './Expenses.css';
 
+import { motion } from 'framer-motion';
+
 const Expenses = () => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
@@ -63,6 +65,7 @@ const Expenses = () => {
   };
 
   return (
+    <>
     <div className="expense-wrapper">
         <div className="add-expense">
           <h2>Add Expense</h2>
@@ -103,6 +106,14 @@ const Expenses = () => {
           </ul>
         </div>
     </div>
+    <motion.div
+      className="color-sweep"
+      initial={{ y: "0%" }} // Start covering the screen
+      animate={{ y: "-100%" }} // Move away when loaded
+      exit={{ y: "0%" }} // Cover the screen on exit
+      transition={{ duration: 0.5, ease: "easeInOut" }}
+    />
+    </>
   );
 };
 

@@ -1,14 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
-import { LoginSignup } from './components/LoginSignup/LoginSignup';
-import { Home } from './components/Home/Home';
+import { BrowserRouter as Router, Route, Routes, Navigate, useLocation } from 'react-router-dom';
 import { auth } from './Firebase/FirebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
 import Navbar from './components/Navbar/Navbar';
-import Dashboard from './components/Dashboard/Dashboard';
-import Income from './components/Income/Income';
-import Expenses from './components/Expenses/Expenses';
-import OneTimeTransactions from './components/OneTimeTransactions/OneTimeTransactions';
+import AnimatedRoutes from './AnimatedRoutes';
 
 import './App.css';
 
@@ -33,14 +28,7 @@ function App() {
   return (
     <Router>
       {user && <Navbar />}
-      <Routes>
-        <Route path="/" element={user ? <Navigate to="/home" /> : <LoginSignup />} />
-        <Route path="/home" element={user ? <Home /> : <Navigate to="/" />} />
-        <Route path="/dashboard" element={user ? <Dashboard /> : <Navigate to="/" />} />
-        <Route path="/income" element={user ? <Income /> : <Navigate to="/" />} />
-        <Route path="/expenses" element={user ? <Expenses /> : <Navigate to="/" />} />
-        <Route path="/one-time-transactions" element={user ? <OneTimeTransactions /> : <Navigate to="/" />} />
-      </Routes>
+      <AnimatedRoutes user={user} />
     </Router>
   );
 }

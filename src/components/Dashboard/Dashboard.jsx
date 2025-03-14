@@ -3,6 +3,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { db, auth } from '../../Firebase/FirebaseConfig';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
+import { motion } from 'framer-motion';
 import './Dashboard.css';
 
 const Dashboard = () => {
@@ -82,85 +83,98 @@ const Dashboard = () => {
   };
 
   return (
-    <div className="dashboard">
-      <div className="summary">
-        <div>
-          <p>Total Income: ₹{totalIncome.toFixed(2)}</p>
-          <p>Total Expenses: ₹{totalExpense.toFixed(2)}</p>
-          <p>Remaining Balance: ₹{(totalIncome - totalExpense).toFixed(2)}</p>
-        </div>
-        {totalIncome - totalExpense < 0 && (
-          <div className="money-warning">
-            <p>
-              <span style={{ color: '#dc3545', fontWeight: 'bold' }}>
-                <u>Warning!</u>
-              </span>
-              <br />
-              You are using up more money than you make
-            </p>
+    <>
+      {/* Dashboard Content */}
+      <div className="dashboard-content">
+        <div className="dashboard">
+          <div className="summary">
+            <div>
+              <p>Total Income: ₹{totalIncome.toFixed(2)}</p>
+              <p>Total Expenses: ₹{totalExpense.toFixed(2)}</p>
+              <p>Remaining Balance: ₹{(totalIncome - totalExpense).toFixed(2)}</p>
+            </div>
+            {totalIncome - totalExpense < 0 && (
+              <div className="money-warning">
+                <p>
+                  <span style={{ color: '#dc3545', fontWeight: 'bold' }}>
+                    <u>Warning!</u>
+                  </span>
+                  <br />
+                  You are using up more money than you make
+                </p>
+              </div>
+            )}
+            <div className="controls">
+              <label>Select Time Period: </label>
+              <select value={timePeriod} onChange={(e) => setTimePeriod(e.target.value)}>
+                <option value="daily">Daily</option>
+                <option value="weekly">Weekly</option>
+                <option value="monthly">Monthly</option>
+                <option value="yearly">Yearly</option>
+              </select>
+            </div>
           </div>
-        )}
-        <div className="controls">
-          <label>Select Time Period: </label>
-          <select value={timePeriod} onChange={(e) => setTimePeriod(e.target.value)}>
-            <option value="daily">Daily</option>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-            <option value="yearly">Yearly</option>
-          </select>
+          <div className="pie-charts">
+            <div className="chart-container">
+              <h3>Overall Money Flow</h3>
+              <Pie
+                data={{
+                  labels: ['Income', 'Expenses'],
+                  datasets: [
+                    {
+                      label: 'Money Flow',
+                      data: [totalIncome, totalExpense],
+                      backgroundColor: ['#4caf50', '#f44336'],
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+              />
+            </div>
+            <div className="chart-container">
+              <h3>Income Breakdown</h3>
+              <Pie
+                data={{
+                  labels: Object.keys(incomeCategories),
+                  datasets: [
+                    {
+                      label: 'Income Breakdown',
+                      data: Object.values(incomeCategories),
+                      backgroundColor: ['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'],
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+              />
+            </div>
+            <div className="chart-container">
+              <h3>Expense Breakdown</h3>
+              <Pie
+                data={{
+                  labels: Object.keys(expenseCategories),
+                  datasets: [
+                    {
+                      label: 'Expense Breakdown',
+                      data: Object.values(expenseCategories),
+                      backgroundColor: ['#f44336', '#e57373', '#ffcdd2', '#ff7043'],
+                      hoverOffset: 4,
+                    },
+                  ],
+                }}
+              />
+            </div>
+          </div>
         </div>
       </div>
-      <div className="pie-charts">
-        <div className="chart-container">
-          <h3>Overall Money Flow</h3>
-          <Pie
-            data={{
-              labels: ['Income', 'Expenses'],
-              datasets: [
-                {
-                  label: 'Money Flow',
-                  data: [totalIncome, totalExpense],
-                  backgroundColor: ['#4caf50', '#f44336'],
-                  hoverOffset: 4,
-                },
-              ],
-            }}
-          />
-        </div>
-        <div className="chart-container">
-          <h3>Income Breakdown</h3>
-          <Pie
-            data={{
-              labels: Object.keys(incomeCategories),
-              datasets: [
-                {
-                  label: 'Income Breakdown',
-                  data: Object.values(incomeCategories),
-                  backgroundColor: ['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'],
-                  hoverOffset: 4,
-                },
-              ],
-            }}
-          />
-        </div>
-        <div className="chart-container">
-          <h3>Expense Breakdown</h3>
-          <Pie
-            data={{
-              labels: Object.keys(expenseCategories),
-              datasets: [
-                {
-                  label: 'Expense Breakdown',
-                  data: Object.values(expenseCategories),
-                  backgroundColor: ['#f44336', '#e57373', '#ffcdd2', '#ff7043'],
-                  hoverOffset: 4,
-                },
-              ],
-            }}
-          />
-        </div>
-      </div>
-    </div>
+
+      <motion.div
+        className="color-sweep"
+        initial={{ y: "0%" }} // Start covering the screen
+        animate={{ y: "-100%" }} // Move away when loaded
+        exit={{ y: "0%" }} // Cover the screen on exit
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      />
+    </>
   );
 };
 
