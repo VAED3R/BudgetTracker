@@ -12,6 +12,14 @@
     flex-direction: row;color: black;
   }
   
+  @media (max-width: 768px) {
+    .income-wrapper {
+        flex-direction: column;  /* Stack items vertically */
+        gap: 2rem;
+        padding-top: 70px;
+    }
+}
+
   .add-income {
     background-color: #f9f9f9;
     padding: 20px;

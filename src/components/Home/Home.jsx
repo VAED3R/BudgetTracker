@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { auth } from '../../Firebase/FirebaseConfig';
 
+import './Home.css'
+
 export const Home = () => {
 
   const navigate = useNavigate();

@@ -11,7 +11,15 @@
   /* background-color: rebeccapurple; */
   flex-direction: row;color: black;
 }
-  
+
+@media (max-width: 768px) {
+  .expense-wrapper {
+      flex-direction: column;  /* Stack items vertically */
+      gap: 2rem;
+      padding-top: 70px;
+  }
+}
+
   section {
     height: 100vh;
     display: flex;
