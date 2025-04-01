@@ -40,41 +40,24 @@ const Dashboard = () => {
     let incomeCat = {};
     let expenseCat = {};
 
-    // ✅ Process Regular Income
-    incomeSnapshot.docs.forEach((doc) => {
-      const data = doc.data();
-      if (data.userId === user.uid) {
-        let adjustedIncome = scaleAmount(data.amount, data.frequency || 'monthly');
-        incomeTotal += adjustedIncome;
-        incomeCat[data.name] = (incomeCat[data.name] || 0) + adjustedIncome;
-      }
-    });
-
-    // ✅ Process Regular Expenses
-    expenseSnapshot.docs.forEach((doc) => {
-      const data = doc.data();
-      if (data.userId === user.uid) {
-        let adjustedAmount = scaleAmount(data.amount, data.frequency || 'monthly');
+    const processTransaction = (data, isIncome) => {
+      if (data.userId !== user.uid) return;
+      let amount = parseFloat(data.amount);
+      let adjustedAmount = scaleAmount(amount, 'monthly'); // Convert to monthly first
+      adjustedAmount = scaleAmount(adjustedAmount, timePeriod); // Scale to selected period
+      
+      if (isIncome) {
+        incomeTotal += adjustedAmount;
+        incomeCat[data.name] = (incomeCat[data.name] || 0) + adjustedAmount;
+      } else {
         expenseTotal += adjustedAmount;
         expenseCat[data.name] = (expenseCat[data.name] || 0) + adjustedAmount;
       }
-    });
+    };
 
-    // ✅ Process One-Time Transactions
-    transactionsSnapshot.docs.forEach((doc) => {
-      const data = doc.data();
-      if (data.userId === user.uid) {
-        let amount = parseFloat(data.amount);
-
-        if (data.type === 'income') {
-          incomeTotal += amount;
-          incomeCat[data.name] = (incomeCat[data.name] || 0) + amount;
-        } else if (data.type === 'expense') {
-          expenseTotal += amount;
-          expenseCat[data.name] = (expenseCat[data.name] || 0) + amount;
-        }
-      }
-    });
+    incomeSnapshot.docs.forEach(doc => processTransaction(doc.data(), true));
+    expenseSnapshot.docs.forEach(doc => processTransaction(doc.data(), false));
+    transactionsSnapshot.docs.forEach(doc => processTransaction(doc.data(), doc.data().type === 'income'));
 
     setTotalIncome(incomeTotal);
     setTotalExpense(expenseTotal);
@@ -83,98 +66,46 @@ const Dashboard = () => {
   };
 
   return (
-    <>
-      {/* Dashboard Content */}
-      <div className="dashboard-content">
-        <div className="dashboard">
-          <div className="summary">
-            <div>
-              <p>Total Income: ₹{totalIncome.toFixed(2)}</p>
-              <p>Total Expenses: ₹{totalExpense.toFixed(2)}</p>
-              <p>Remaining Balance: ₹{(totalIncome - totalExpense).toFixed(2)}</p>
-            </div>
-            {totalIncome - totalExpense < 0 && (
-              <div className="money-warning">
-                <p>
-                  <span style={{ color: '#dc3545', fontWeight: 'bold' }}>
-                    <u>Warning!</u>
-                  </span>
-                  <br />
-                  You are using up more money than you make
-                </p>
-              </div>
-            )}
-            <div className="controls">
-              <label>Select Time Period: </label>
-              <select value={timePeriod} onChange={(e) => setTimePeriod(e.target.value)}>
-                <option value="daily">Daily</option>
-                <option value="weekly">Weekly</option>
-                <option value="monthly">Monthly</option>
-                <option value="yearly">Yearly</option>
-              </select>
-            </div>
+    <div className="dashboard-content">
+      <div className="dashboard">
+        <div className="summary">
+          <div>
+            <p>Total Income: ₹{totalIncome.toFixed(2)}</p>
+            <p>Total Expenses: ₹{totalExpense.toFixed(2)}</p>
+            <p>Remaining Balance: ₹{(totalIncome - totalExpense).toFixed(2)}</p>
           </div>
-          <div className="pie-charts">
-            <div className="chart-container">
-              <h3>Overall Money Flow</h3>
-              <Pie
-                data={{
-                  labels: ['Income', 'Expenses'],
-                  datasets: [
-                    {
-                      label: 'Money Flow',
-                      data: [totalIncome, totalExpense],
-                      backgroundColor: ['#4caf50', '#f44336'],
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-              />
+          {totalIncome - totalExpense < 0 && (
+            <div className="money-warning">
+              <p><span style={{ color: '#dc3545', fontWeight: 'bold' }}><u>Warning!</u></span><br />You are using up more money than you make</p>
             </div>
-            <div className="chart-container">
-              <h3>Income Breakdown</h3>
-              <Pie
-                data={{
-                  labels: Object.keys(incomeCategories),
-                  datasets: [
-                    {
-                      label: 'Income Breakdown',
-                      data: Object.values(incomeCategories),
-                      backgroundColor: ['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'],
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-              />
-            </div>
-            <div className="chart-container">
-              <h3>Expense Breakdown</h3>
-              <Pie
-                data={{
-                  labels: Object.keys(expenseCategories),
-                  datasets: [
-                    {
-                      label: 'Expense Breakdown',
-                      data: Object.values(expenseCategories),
-                      backgroundColor: ['#f44336', '#e57373', '#ffcdd2', '#ff7043'],
-                      hoverOffset: 4,
-                    },
-                  ],
-                }}
-              />
-            </div>
+          )}
+          <div className="controls">
+            <label>Select Time Period: </label>
+            <select value={timePeriod} onChange={(e) => setTimePeriod(e.target.value)}>
+              <option value="daily">Daily</option>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+              <option value="yearly">Yearly</option>
+            </select>
+          </div>
+        </div>
+        <div className="pie-charts">
+          <div className="chart-container">
+            <h3>Overall Money Flow</h3>
+            <Pie data={{ labels: ['Income', 'Expenses'], datasets: [{ data: [totalIncome, totalExpense], backgroundColor: ['#4caf50', '#f44336'] }] }} />
+          </div>
+          <div className="chart-container">
+            <h3>Income Breakdown</h3>
+            <Pie data={{ labels: Object.keys(incomeCategories), datasets: [{ data: Object.values(incomeCategories), backgroundColor: ['#4caf50', '#8bc34a', '#cddc39', '#ffeb3b'] }] }} />
+          </div>
+          <div className="chart-container">
+            <h3>Expense Breakdown</h3>
+            <Pie data={{ labels: Object.keys(expenseCategories), datasets: [{ data: Object.values(expenseCategories), backgroundColor: ['#f44336', '#e57373', '#ffcdd2', '#ff7043'] }] }} />
           </div>
         </div>
       </div>
-
-      <motion.div
-        className="color-sweep"
-        initial={{ y: "0%" }} // Start covering the screen
-        animate={{ y: "-100%" }} // Move away when loaded
-        exit={{ y: "0%" }} // Cover the screen on exit
-        transition={{ duration: 0.5, ease: "easeInOut" }}
-      />
-    </>
+      <motion.div className="color-sweep" initial={{ y: "0%" }} animate={{ y: "-100%" }} exit={{ y: "0%" }} transition={{ duration: 0.5, ease: "easeInOut" }} />
+    </div>
   );
 };
 

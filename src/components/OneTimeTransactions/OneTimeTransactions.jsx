@@ -8,7 +8,7 @@ import { motion } from 'framer-motion';
 const OneTimeTransactions = () => {
   const [name, setName] = useState('');
   const [amount, setAmount] = useState('');
-  const [type, setType] = useState('income'); // ✅ "income" or "expense"
+  const [type, setType] = useState('income');
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
@@ -45,13 +45,14 @@ const OneTimeTransactions = () => {
         userId: user.uid,
         name,
         amount: parseFloat(amount),
-        type, // ✅ Stores whether it's an income or expense
+        type,
+        date: new Date().toISOString()
       });
 
       alert('Transaction added successfully!');
       setName('');
       setAmount('');
-      setType('income'); // Reset to default
+      setType('income');
       fetchTransactions();
     } catch (error) {
       console.error('Error adding transaction:', error);
@@ -66,52 +67,52 @@ const OneTimeTransactions = () => {
 
   return (
     <>
-    <div className="transaction-wrapper">
-      <div className="add-transaction">
-        <h2>Add One-Time Transaction</h2>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Transaction Name (e.g. Bonus, Medical Bill)"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+      <div className="transaction-wrapper">
+        <div className="add-transaction">
+          <h2>Add One-Time Transaction</h2>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Transaction Name (e.g. Bonus, Medical Bill)"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
 
-          <input
-            type="number"
-            placeholder="Amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
+            <input
+              type="number"
+              placeholder="Amount"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+            />
 
-          <select value={type} onChange={(e) => setType(e.target.value)}>
-            <option value="income">Income</option>
-            <option value="expense">Expense</option>
-          </select>
+            <select value={type} onChange={(e) => setType(e.target.value)}>
+              <option value="income">Income</option>
+              <option value="expense">Expense</option>
+            </select>
 
-          <button type="submit">Add Transaction</button>
-        </form>
+            <button type="submit">Add Transaction</button>
+          </form>
+        </div>
+
+        <div className="transaction-list">
+          <h3>Your One-Time Transactions</h3>
+          <ul>
+            {transactions.map(transaction => (
+              <li key={transaction.id} className={transaction.type === 'income' ? 'income' : 'expense'}>
+                {transaction.name} - ₹{transaction.amount} ({transaction.type}) - {new Date(transaction.date).toLocaleDateString()}
+                <button onClick={() => handleDelete(transaction.id)}>Delete</button>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
-      
-      <div className="transaction-list">
-        <h3>Your One-Time Transactions</h3>
-        <ul>
-          {transactions.map(transaction => (
-            <li key={transaction.id} className={transaction.type === 'income' ? 'income' : 'expense'}>
-              {transaction.name} - ₹{transaction.amount} ({transaction.type})
-              <button onClick={() => handleDelete(transaction.id)}>Delete</button>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-    <motion.div
-      className="color-sweep"
-      initial={{ y: "0%" }} // Start covering the screen
-      animate={{ y: "-100%" }} // Move away when loaded
-      exit={{ y: "0%" }} // Cover the screen on exit
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-    />
+      <motion.div
+        className="color-sweep"
+        initial={{ y: "0%" }}
+        animate={{ y: "-100%" }}
+        exit={{ y: "0%" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      />
     </>
   );
 };

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db, auth } from '../../Firebase/FirebaseConfig';
 import './Income.css';
-
 import { motion } from 'framer-motion';
 
 const Income = () => {
@@ -45,7 +44,8 @@ const Income = () => {
         userId: user.uid,
         name,
         amount: parseFloat(amount),
-        frequency
+        frequency,
+        date: new Date().toISOString()
       });
 
       alert('Income added successfully!');
@@ -66,7 +66,7 @@ const Income = () => {
 
   return (
     <>
-    <div className="income-wrapper">
+      <div className="income-wrapper">
         <div className="add-income">
           <h2>Add Income</h2>
           <form onSubmit={handleSubmit}>
@@ -99,19 +99,19 @@ const Income = () => {
           <ul>
             {incomes.map(income => (
               <li key={income.id}>
-                {income.name} - ₹{income.amount} ({income.frequency})
+                {income.name} - ₹{income.amount} ({income.frequency}) - {new Date(income.date).toLocaleDateString()}
                 <button onClick={() => handleDelete(income.id)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
-    </div>
+      </div>
 
       <motion.div
         className="color-sweep"
-        initial={{ y: "0%" }} // Start covering the screen
-        animate={{ y: "-100%" }} // Move away when loaded
-        exit={{ y: "0%" }} // Cover the screen on exit
+        initial={{ y: "0%" }}
+        animate={{ y: "-100%" }}
+        exit={{ y: "0%" }}
         transition={{ duration: 0.5, ease: "easeInOut" }}
       />
     </>

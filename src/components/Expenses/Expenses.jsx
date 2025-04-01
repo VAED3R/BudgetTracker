@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { collection, addDoc, getDocs, deleteDoc, doc } from 'firebase/firestore';
 import { db, auth } from '../../Firebase/FirebaseConfig';
 import './Expenses.css';
-
 import { motion } from 'framer-motion';
 
 const Expenses = () => {
@@ -45,7 +44,8 @@ const Expenses = () => {
         userId: user.uid,
         name,
         amount: parseFloat(amount),
-        frequency
+        frequency,
+        date: new Date().toISOString()
       });
 
       alert('Expense added successfully!');
@@ -66,7 +66,7 @@ const Expenses = () => {
 
   return (
     <>
-    <div className="expense-wrapper">
+      <div className="expense-wrapper">
         <div className="add-expense">
           <h2>Add Expense</h2>
           <form onSubmit={handleSubmit}>
@@ -99,20 +99,20 @@ const Expenses = () => {
           <ul>
             {expenses.map(expense => (
               <li key={expense.id}>
-                {expense.name} - ₹{expense.amount} ({expense.frequency})
+                {expense.name} - ₹{expense.amount} ({expense.frequency}) - {new Date(expense.date).toLocaleDateString()}
                 <button onClick={() => handleDelete(expense.id)}>Delete</button>
               </li>
             ))}
           </ul>
         </div>
-    </div>
-    <motion.div
-      className="color-sweep"
-      initial={{ y: "0%" }} // Start covering the screen
-      animate={{ y: "-100%" }} // Move away when loaded
-      exit={{ y: "0%" }} // Cover the screen on exit
-      transition={{ duration: 0.5, ease: "easeInOut" }}
-    />
+      </div>
+      <motion.div
+        className="color-sweep"
+        initial={{ y: "0%" }}
+        animate={{ y: "-100%" }}
+        exit={{ y: "0%" }}
+        transition={{ duration: 0.5, ease: "easeInOut" }}
+      />
     </>
   );
 };

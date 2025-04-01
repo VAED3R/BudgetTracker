@@ -109,3 +109,67 @@ body {
     max-height: 250px;
   }
 }
+
+.budget-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.budget-control label {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.budget-control input {
+  width: 100%;
+  max-width: 250px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: center;
+}
+
+/* Warning alert when budget is exceeded */
+.budget-warning {
+  margin-top: 15px;
+  background-color: #ffcccc;
+  color: #d8000c;
+  padding: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  border: 1px solid #d8000c;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .budget-control input {
+    width: 80%;
+    font-size: 14px;
+  }
+
+  .budget-warning {
+    width: 90%;
+    font-size: 14px;
+    padding: 8px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .budget-control input {
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  .budget-warning {
+    font-size: 13px;
+    padding: 6px;
+  }
+}
