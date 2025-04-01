@@ -110,3 +110,8 @@
   .expense-list li button:hover {
     background-color: #d32f2f;
   }
+
+  input::placeholder {
+    color: white;
+    opacity: 1;
+  }
